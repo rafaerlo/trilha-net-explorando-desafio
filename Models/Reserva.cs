@@ -13,48 +13,83 @@ namespace DesafioProjetoHospedagem.Models
             DiasReservados = diasReservados;
         }
 
-        public void CadastrarHospedes(List<Pessoa> hospedes)
+        public void CadastrarHospedes()
         {
-            // TODO: Verificar se a capacidade é maior ou igual ao número de hóspedes sendo recebido
-            // *IMPLEMENTE AQUI*
-            if (true)
+            Hospedes = new List<Pessoa>();
+            if (Suite.Capacidade >= ObterQuantidadeHospedes())
             {
-                Hospedes = hospedes;
+                for (int i=0; i< Suite.Capacidade; i++)
+                {
+                    Console.WriteLine("Cadastrar Hóspede");
+                    Console.WriteLine("Registrar nome 'fim' a qualquer momento para concluir cadastros.");
+                    Pessoa hospede = new Pessoa();
+                    
+                    Console.WriteLine("Nome: ");
+                    hospede.Nome = Console.ReadLine();
+                    Console.WriteLine("Sobrenome: ");
+                    hospede.Sobrenome = Console.ReadLine();
+
+                    if(hospede.Nome == "fim" || hospede.Sobrenome == "fim")
+                    {
+                        i = Suite.Capacidade;
+                        Console.WriteLine("Cadastro finalizado");
+                    }
+                    else
+                    {
+                        Hospedes.Add(hospede);
+                    }
+                }
             }
             else
             {
-                // TODO: Retornar uma exception caso a capacidade seja menor que o número de hóspedes recebido
-                // *IMPLEMENTE AQUI*
+                Hospedes = null;
+                throw new Exception("Capacidade máxima de hóspedes não permitida.");
             }
         }
 
         public void CadastrarSuite(Suite suite)
         {
             Suite = suite;
+            CadastrarHospedes();
         }
 
         public int ObterQuantidadeHospedes()
         {
-            // TODO: Retorna a quantidade de hóspedes (propriedade Hospedes)
-            // *IMPLEMENTE AQUI*
-            return 0;
+            int quantidadeHospedes = 0;
+            if(Hospedes != null)
+            {
+                quantidadeHospedes = Hospedes.Count > 0 ? Hospedes.Count : 0;
+            }
+            return quantidadeHospedes;
+        }
+
+        public void ImprimirReserva()
+        {
+            Console.WriteLine("Suite: " + Suite.TipoSuite);
+            Console.WriteLine("Hóspedes: " + ObterQuantidadeHospedes());
+            Console.WriteLine("Dia reservados: " + DiasReservados);
         }
 
         public decimal CalcularValorDiaria()
         {
-            // TODO: Retorna o valor da diária
-            // Cálculo: DiasReservados X Suite.ValorDiaria
-            // *IMPLEMENTE AQUI*
-            decimal valor = 0;
-
-            // Regra: Caso os dias reservados forem maior ou igual a 10, conceder um desconto de 10%
-            // *IMPLEMENTE AQUI*
-            if (true)
-            {
-                valor = 0;
-            }
+            decimal valor = DiasReservados >= 10 ? DiasReservados * Suite.ValorDiaria * 9/10 : DiasReservados * Suite.ValorDiaria;
 
             return valor;
+        }
+
+        public void ListarHospedes()
+        {
+            if(Hospedes != null)
+            {
+                for(int i = 0; i < Hospedes.Count; i++)
+                {
+                    Console.WriteLine(Hospedes[i].ImprimirPessoa());
+                }
+            }
+            else
+            {
+                throw new Exception("Nenhuma pessoa nesta reserva.");
+            }
         }
     }
 }

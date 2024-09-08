@@ -14,5 +14,13 @@ namespace DesafioProjetoHospedagem.Models
         public string TipoSuite { get; set; }
         public int Capacidade { get; set; }
         public decimal ValorDiaria { get; set; }
+
+        public void ImprimeDadosSuite()
+        {
+            Console.WriteLine("Suite: " + TipoSuite);
+            Console.WriteLine("Capacidade: " + Capacidade);
+            Console.WriteLine("Valor Diária: " + ValorDiaria);
+            Console.WriteLine("-----------------------------");
+        }
     }
 }
